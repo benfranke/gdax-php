@@ -78,6 +78,9 @@ class PublicClient {
      */
     protected function get(array $uriParts, $type, array $options = []) {
         $response = $this->request(GDAXConstants::METHOD_GET, $uriParts, $options);
+        if (!is_array($response)) {
+            throw new \Exception('Received invalid response : ' . $response .' when expecting an array ');
+        }
         return (new ResponseContainer)->setRawData($response)->mapResponseToType($type)->getData();
     }
 
