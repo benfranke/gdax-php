@@ -185,7 +185,7 @@ class CoinbaseAccount implements ResponseTypeInterface {
     /**
      * @return WireDepositPart
      */
-    public function getWireDeposit() {
+    public function getWireDepositInformation() {
         return $this->wireDeposit;
     }
 
@@ -194,15 +194,32 @@ class CoinbaseAccount implements ResponseTypeInterface {
      *
      * @return CoinbaseAccount
      */
-    protected function setWireDeposit($wireDeposit) {
+    protected function setWireDepositInformation($wireDeposit) {
         $this->wireDeposit = $wireDeposit;
         return $this;
     }
 
     /**
+     * @return WireDepositPart
+     */
+    public function getWireDeposit() {
+        return $this->getWireDepositInformation();
+    }
+
+    /**
+     * @param WireDepositPart $wireDeposit
+     *
+     * @return CoinbaseAccount
+     */
+    protected function setWireDeposit($wireDeposit) {
+        return $this->setWireDepositInformation($wireDeposit);
+    }
+
+
+    /**
      * @return SepaDepositPart
      */
-    public function getSepaDeposit() {
+    public function getSepaDepositInformation() {
         return $this->sepaDeposit;
     }
 
@@ -211,9 +228,25 @@ class CoinbaseAccount implements ResponseTypeInterface {
      *
      * @return CoinbaseAccount
      */
-    protected function setSepaDeposit($sepaDeposit) {
+    protected function setSepaDepositInformation($sepaDeposit) {
         $this->sepaDeposit = $sepaDeposit;
         return $this;
+    }
+
+    /**
+     * @return SepaDepositPart
+     */
+    public function getSepaDeposit() {
+        return $this->getSepaDepositInformation();
+    }
+
+    /**
+     * @param SepaDepositPart $sepaDeposit
+     *
+     * @return CoinbaseAccount
+     */
+    protected function setSepaDeposit($sepaDeposit) {
+        return $this->setSepaDepositInformation($sepaDeposit);
     }
 
     /**
@@ -225,12 +258,12 @@ class CoinbaseAccount implements ResponseTypeInterface {
 
         $this->traitInitFromArray($data);
 
-        if (!empty($data['wire_transfer'])) {
-            $this->setWireDeposit((new WireDepositPart())->initFromArray($data['wire_transfer']));
+        if (!empty($data['wire_deposit_information'])) {
+            $this->setWireDepositInformation((new WireDepositPart())->initFromArray($data['wire_deposit_information']));
         }
 
         if (!empty($data['sepa_deposit_information'])) {
-            $this->setSepaDeposit((new SepaDepositPart())->initFromArray($data['sepa_deposit_information']));
+            $this->setSepaDepositInformation((new SepaDepositPart())->initFromArray($data['sepa_deposit_information']));
         }
 
         return $this;
